@@ -29,6 +29,10 @@ for lt, ln, el, name in zip(lat, lon, elev, name):
     iframe = folium.IFrame(html=html % (name, name, el), width=200, height=100)
     fg.add_child(folium.CircleMarker(location=[lt, ln], radius = 6, popup=folium.Popup(iframe), fill_color = color_producer(el), color = 'grey', fill_opacity=0.7))
 
+fg.add_child(folium.GeoJson(data=open('world.json', 'r', encoding='utf-8-sig').read(),
+style_function=lambda x: {'fillColor':'green' if x['properties']['POP2005'] < 1000000
+else 'orange' if 1000000 <=  x['properties']['POP2005'] < 50000000 else 'red'}))
+
 map.add_child(fg)
 
 map.save("Map_html_popup_advanced.html")
